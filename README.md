@@ -1,4 +1,4 @@
-### Tbot, un BOT(y ademas asi se llama mi gatita:)
+### Metrics bot, un BOT(y ademas asi se llama mi gatita:)
 Un bot en portugués (PERO TRADUCIDO POR TU PAPI SAMU330) hecho todo el mundo, con cientos de comandos que sigue creciendo.
 Pido disculpas por cualquier error que pueda aparecer, los corregiré lo antes posible, y lo siento si hay sesiones sin editar que deban editarse, lo subí sobre la marcha.
 

@@ -183,6 +183,7 @@ module.exports = kconfig = async (kill, message) => {
 			kill.reply(from, 'exclamo el gey', id)	
 		}
 
+		
         // MENSAGENS
         if (!isCmd && !isGroupMsg) { return console.log('> MENSAGEM AS', color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), 'de', color(pushname)) }
         if (!isCmd && isGroupMsg) { return console.log('> MENSAGEM AS', color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), 'de', color(pushname), 'em', color(name || formattedTitle)) }
@@ -190,8 +191,10 @@ module.exports = kconfig = async (kill, message) => {
 		// COMANDOS
         if (isCmd && !isGroupMsg) { console.log(color(`> COMANDO "/${command} [${args.length}]" AS`), color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), 'de', color(pushname)) }
         if (isCmd && isGroupMsg) { console.log(color(`> COMANDO "/${command} [${args.length}]" AS`), color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), 'de', color(pushname), 'em', color(name || formattedTitle)) }
-		
-
+	
+	//[AUTO READ] Auto read message 
+	kill.sendSeen(chatId)
+	    
         // Impede SPAM
         msgFilter.addFilter(from)
 	
@@ -247,18 +250,24 @@ module.exports = kconfig = async (kill, message) => {
 
 		case 'ttp':
 			if (args.length == 0) return kill.reply(from, '¿Dónde está la frase?', id)
-			axios.get(`https://st4rz.herokuapp.com/api/ttp?kata=${body.slice(5)}`)
-			.then(res => {
-				kill.sendImageAsSticker(from, res.data.result)
-			})
-			break
-			
-			
-		case 'anonymod':
-    await kill.reply(from, 'Algunos videos del canal de mi bro DEIVID\n\nWhatsApp ANONYMOUS V.06 oFc 100% inmune\n\nhttps://youtu.be/tOE_ywldS_Q\n\nComo modificar un WA prt-1\n\nhttps://youtu.be/WdWsvY3xGPc\n\nWhAtsApp BusSines Golden/13\n\nhttps://youtu.be/JqSHAWlGhDY\n\nNumero virtual +48 método efectivo\n\nhttps://youtu.be/7GOss7AaJ88\n\nNumero virtual +1 EE.Uu (ANONYMOUS DEIVID)\n\nhttps://youtu.be/D1G6hI1mLs4\n\nCreando con pixelLab (ANONYMOUS DEIVID)\n\nhttps://youtu.be/so1y1g-MPZ4\n\nSu video mas reciente:\n\nhttps://youtu.be/hy4od9BT-tA\n\nEspero y lo apoyes🤗', id)
-    break
-	
-	    case 'aiden':
+                kill.simulateTyping(from, true, id)
+                await sleep(2000)
+                var ttp = 'https://api.xteam.xyz/ttp?file&text=${body.slice(5)}'
+				kill.sendStickerfromUrl(from, ttp, id)
+                kill.simulateTyping(from, false, id)
+            break
+            
+		case 'attp':
+			if (args.length == 0) return kill.reply(from, '¿Dónde está la frase?', id)
+                kill.reply(from, mess.wait, id)
+                kill.simulateTyping(from, true, id)
+                await sleep(2000)
+				kill.sendStickerfromUrl(from, `https://api.xteam.xyz/attp?file&text=${body.slice(5)}`, id)
+                await sleep(2000)
+                kill.simulateTyping(from, false, id)
+            break
+            
+	case 'aiden':
     await kill.reply(from, '｡☆✼★━━━━━━━━━━━━★✼☆｡\n\nHola!\n\nQuieres saber quien es Aiden?\n\nSolo unete a mi grupo de WhatsApp: (pd usa /aidenhistory) https://chat.whatsapp.com/LpBgvOcx0mqHQx9GzY2aZQ\n\n* ◄ ◊ ► ◄ ◊ ► ◄ ◊ ► ◄ ◊ ► ◄ ◊ ►*', id)
 	break	
 	
@@ -850,8 +859,10 @@ if (isMedia) {
              if (args.length == 0) return kill.reply(from, 'Lo uso incorrectamente.', id)
             axios.get(`http://ytdlrest.herokuapp.com/api/info?url=${body.slice(5)}&x`)
             .then(async(rest) => {
+                    kill.simulateTyping(from, true, id)
 					var m3pa = rest.data.info.url
-					await kill.sendFileFromUrl(from, m3pa, 'ByTbot.mp3', '', id, '', '', true)
+                    await kill.sendPtt(from, m3pa, id)
+                    kill.simulateTyping(from, false, id)
                 })
 			break
 
@@ -946,7 +957,7 @@ if (isMedia) {
 
 		case 'qr':
 			const qrco = body.slice(4)
-			await kill.sendFileFromUrl(from, `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrco}`, '', 'Su mensaje fue insertado en este QRCode, disfrute.\n\nBy Aiden - Tbot.', id)
+			await kill.sendFileFromUrl(from, `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrco}`, '', 'Su mensaje fue insertado en este QRCode, disfrute.\n\nBy Aiden - Metrics bot.', id)
 			break
 
 
@@ -1059,7 +1070,7 @@ if (isMedia) {
 
         case 'iris':
 			try {
-				const iris = await axios.get(`http://simsumi.herokuapp.com/api?text=${body.slice(6)}&lang=pt`)
+				const iris = await axios.get(`https://simsumi.herokuapp.com/api?text={body.slice(6)}&lang=es_es$`)
 				if (iris.data.success == '') {
 					console.log('Request falhou, usando respostas locais...')
 					let rndrl = fs.readFileSync('./lib/reply.txt').toString().split('\n')
@@ -1107,7 +1118,19 @@ if (isMedia) {
             kill.sendContact(from, 'wa.me/+529984907794')
             break
 
-
+        case 'bot':
+             if (args.length == 0) return kill.reply(from, 'Lo uso incorrectamente.', id)
+            axios.get(`https://simsumi.herokuapp.com/api?text={body.slice(5)}&lang=es_es`)
+            .then(async(rest) => {
+                    kill.simulateTyping(from, true, id)
+                    var boot = rest.data.success
+                    await sleep(1000)
+                    await kill.reply(from, boot, id)
+                    kill.simulateTyping(from, false, id)
+                })
+			break
+  
+            break
         case 'roll':
             const dice = Math.floor(Math.random() * 6) + 1
             await kill.sendStickerfromUrl(from, 'https://www.random.org/dice/dice' + dice + '.png')
@@ -1556,7 +1579,7 @@ if (isMedia) {
             const chatz = await kill.getAllChatIds()
             for (let ids of chatz) {
                 var cvk = await kill.getChatById(ids)
-                if (!cvk.isReadOnly) await kill.sendText(ids, `[Transmissão do dono da Tbot]\n\n${msg}`)
+                if (!cvk.isReadOnly) await kill.sendText(ids, `[Transmissão do dono da Metrics bot]\n\n${msg}`)
             }
             kill.reply(from, 'Difusión exitosa!', id)
             break
@@ -1607,7 +1630,7 @@ if (isMedia) {
 		case 'sip':
 			if (args.length == 1) {
 				const ip = await axios.get(`http://ipwhois.app/json/${body.slice(5)}`)
-				await kill.sendLinkWithAutoPreview(from, `http://www.google.com/maps/place/${ip.data.latitude},${ip.data.longitude}`, `\n✪ IP: ${ip.data.ip}\n\n✪ Tipo: ${ip.data.type}\n\n✪ Region: ${ip.data.region}\n\n✪ Ciudad: ${ip.data.city}\n\n✪ Latitud: ${ip.data.latitude}\n\n✪ Longitud: ${ip.data.longitude}\n\n✪ Provedor: ${ip.data.isp}\n\n✪ Continente: ${ip.data.continent}\n\n✪ Sigla del continente: ${ip.data.continent_code}\n\n✪ País: ${ip.data.country}\n\n✪ Sigla del País: ${ip.data.country_code}\n\n✪ Capital do País: ${ip.data.country_capital}\n\n✪ DDI: ${ip.data.country_phone}\n\n✪ Países Vesinos: ${ip.data.country_neighbours}\n\n✪ Horário: ${ip.data.timezone} ${ip.data.timezone_name} ${ip.data.timezone_gmt}\n\n✪ Moneda: ${ip.data.currency}\n\n✪ Sigla de Moneda: ${ip.data.currency_code}\n\nBusca de IP realizada por Tbot - Aiden!`, id)
+				await kill.sendLinkWithAutoPreview(from, `http://www.google.com/maps/place/${ip.data.latitude},${ip.data.longitude}`, `\n✪ IP: ${ip.data.ip}\n\n✪ Tipo: ${ip.data.type}\n\n✪ Region: ${ip.data.region}\n\n✪ Ciudad: ${ip.data.city}\n\n✪ Latitud: ${ip.data.latitude}\n\n✪ Longitud: ${ip.data.longitude}\n\n✪ Provedor: ${ip.data.isp}\n\n✪ Continente: ${ip.data.continent}\n\n✪ Sigla del continente: ${ip.data.continent_code}\n\n✪ País: ${ip.data.country}\n\n✪ Sigla del País: ${ip.data.country_code}\n\n✪ Capital do País: ${ip.data.country_capital}\n\n✪ DDI: ${ip.data.country_phone}\n\n✪ Países Vesinos: ${ip.data.country_neighbours}\n\n✪ Horário: ${ip.data.timezone} ${ip.data.timezone_name} ${ip.data.timezone_gmt}\n\n✪ Moneda: ${ip.data.currency}\n\n✪ Sigla de Moneda: ${ip.data.currency_code}\n\nBusca de IP realizada por Metrics bot - Aiden!`, id)
             } else {
 				await kill.reply(from, 'Especifique una IP de tipo IPV4.', id)
             }
@@ -1617,7 +1640,7 @@ if (isMedia) {
 		case 'scep':
 			if (args.length == 1) {
 				const cep = await axios.get(`https://viacep.com.br/ws/${body.slice(6)}/json/`)
-				await kill.reply(from, `✪ CEP: ${cep.data.cep}\n\n✪ Lugar públicoro: ${cep.data.logradouro}\n\n✪ Complemento: ${cep.data.complemento}\n\n✪ Barrio: ${cep.data.bairro}\n\n✪ Estado: ${cep.data.localidade}\n\n✪ DDD: ${cep.data.ddd}\n\n✪ Sigla del Estado: ${cep.data.uf}\n\n✪ Código IBGE: ${cep.data.ibge}\n\n✪ Código GIA: ${cep.data.gia}\n\n✪ Código Siafi: ${cep.data.siafi}\n\nBusca de CEP echa por Tbot - Aiden.`, id)
+				await kill.reply(from, `✪ CEP: ${cep.data.cep}\n\n✪ Lugar públicoro: ${cep.data.logradouro}\n\n✪ Complemento: ${cep.data.complemento}\n\n✪ Barrio: ${cep.data.bairro}\n\n✪ Estado: ${cep.data.localidade}\n\n✪ DDD: ${cep.data.ddd}\n\n✪ Sigla del Estado: ${cep.data.uf}\n\n✪ Código IBGE: ${cep.data.ibge}\n\n✪ Código GIA: ${cep.data.gia}\n\n✪ Código Siafi: ${cep.data.siafi}\n\nBusca de CEP echa por Metrics bot - Aiden.`, id)
             } else {
 				await kill.reply(from, 'Especifique un CEP.', id)
             }
@@ -1679,7 +1702,10 @@ if (isMedia) {
             kill.reply(from, 'Todo prohibido', id)
             break
 
-
+        case 'onlyme':
+         kill.createGroup('Solo uno',from)
+        break
+            
         case 'leaveall':
             if (!isOwner) return kill.reply(from, 'Solo mi creador tiene acceso a este comando.', id)
             const allChats = await kill.getAllChatIds()

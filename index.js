@@ -1,3 +1,4 @@
+  
 const { create, Client } = require('@open-wa/wa-automate') // As consts aqui declaram as funções de outros arquivos
 const welcome = require('./lib/welcome') // Ou de modulos que usei
 const kconfig = require('./config')
@@ -6,12 +7,11 @@ const color = require('./lib/color')
 
 // Cria um cliente de inicialização da BOT
 const start = (kill = new Client()) => {
-    console.log(color('\n> DEV OFICIAL ='), color('SAMU330', 'yellow'))
-	console.log(color('\n>'), color('Instalacion finalizada, ya puede usar comandos...\n', 'red'))
-	
+    console.log(color('[DEV]'), color('Aiden', 'yellow'))
+    console.log(color('[~>>]'), color('BOT Started!', 'green'))	
 		// Forçar recarregamento caso obtenha erros
 		kill.onStateChanged((state) => {
-			console.log('[Estado de Tbot]', state)
+			console.log(color('[~>>]', 'red'), state)
 			if (state === 'CONFLICT' || state === 'UNLAUNCHED') kill.forceRefocus()
 		})
 	
